@@ -1,21 +1,25 @@
 import React, { useEffect } from "react";
-import { Link, useParams, useNavigate } from "react-router-dom";
-import {
-  useGetOrderDetailsQuery,
-  usePayOrderMutation,
-  useGetPayPalClientIdQuery,
-} from "../slices/ordersApiSlice.js"; // 🔥 صحح المسار
+import { Link, useParams } from "react-router-dom";
+import { useGetOrderDetailsQuery } from "../slices/ordersApiSlice.JS";
 import Loader from "../components/loader";
 import Message from "./../components/Message";
-import { Button, Card, Col, Image, ListGroup, Row } from "react-bootstrap";
+import {
+  Button,
+  Card,
+  Col,
+  Image,
+  ListGroup,
+  ListGroupItem,
+  Row,
+} from "react-bootstrap";
 import { PayPalButtons, usePayPalScriptReducer } from "@paypal/react-paypal-js";
+import { usePayOrderMutation } from "../slices/ordersApiSlice.JS";
 import { useSelector } from "react-redux";
+import { useGetPayPalClientIdQuery } from "../slices/ordersApiSlice.JS";
 import { toast } from "react-toastify";
 
 const OrderScreen = () => {
   const { id: orderId } = useParams();
-  const navigate = useNavigate(); // 🔥 أضف useNavigate
-  const { userInfo } = useSelector((state) => state.auth);
 
   const {
     data: order,
@@ -34,14 +38,9 @@ const OrderScreen = () => {
     error: errorPayPal,
   } = useGetPayPalClientIdQuery();
 
-  // 🔥 تحقق من التخويل
-  useEffect(() => {
-    if (order && userInfo && order.user && order.user._id !== userInfo._id) {
-      toast.error("You are not authorized to view this order");
-      navigate("/");
-    }
-  }, [order, userInfo, navigate]);
+  const { userInfo } = useSelector((state) => state.auth);
 
+  //   console.log(order);
   useEffect(() => {
     if (!errorPayPal && !loadingPayPal && paypal?.clientId) {
       const loadPayPalScript = async () => {
@@ -51,8 +50,8 @@ const OrderScreen = () => {
             "client-id": paypal.clientId,
             currency: "USD",
           },
-        });
-        paypalDispatch({ type: "setLoadingStatus", value: "pending" });
+        }),
+          paypalDispatch({ type: "setLoadingStatus", value: "pending" });
       };
       if (order && !order.isPaid) {
         if (!window.paypal) {
@@ -62,63 +61,26 @@ const OrderScreen = () => {
     }
   }, [order, paypal, paypalDispatch, loadingPayPal, errorPayPal]);
 
-  // 🔥 صحح دالة onApprove
   function onApprove(data, actions) {
     return actions.order.capture().then(async function (details) {
       console.log("PayPal Details Received:", details);
       try {
-        await payOrder({
-          orderId,
-          details: {
-            id: details.id,
-            status: details.status,
-            update_time: details.update_time,
-            payer: {
-              email_address: details.payer.email_address,
-            },
-          },
-        }).unwrap(); // 🔥 أضف unwrap()
+        await payOrder({ orderId, details }).unwrap();
         refetch();
-        toast.success("Payment successful");
+        toast.success("payment successfull");
       } catch (err) {
-        toast.error(err?.data?.message || err.message);
+        toast.error(err?.data.message || err.message);
       }
     });
   }
-
-  // 🔥 صحح دالة onApproveTest
   async function onApproveTest() {
-    try {
-      // 🔥 تحقق من التخويل قبل الدفع
-      if (
-        !userInfo ||
-        (order && order.user && order.user._id !== userInfo._id)
-      ) {
-        toast.error("You are not authorized to pay this order");
-        return;
-      }
-
-      await payOrder({
-        orderId,
-        details: {
-          id: `test_${Date.now()}`,
-          status: "completed",
-          update_time: new Date().toISOString(),
-          payer: { email_address: userInfo.email },
-        },
-      }).unwrap(); // 🔥 أضف unwrap()
-
-      refetch();
-      toast.success("Payment successful");
-    } catch (err) {
-      toast.error(err?.data?.message || err.message);
-    }
+    await payOrder({ orderId, details: { payer: {} } });
+    refetch();
+    toast.success("payment successfull");
   }
-
   function onError(err) {
     toast.error(err.message);
   }
-
   function createOrder(data, actions) {
     return actions.order
       .create({
@@ -135,148 +97,122 @@ const OrderScreen = () => {
       });
   }
 
-  // 🔥 تحقق إذا لم يكن المستخدم مصرح له
-  if (order && userInfo && order.user && order.user._id !== userInfo._id) {
-    return (
-      <Message variant="danger">
-        You are not authorized to view this order
-      </Message>
-    );
-  }
-
   return isLoading ? (
     <Loader />
   ) : error ? (
-    <Message variant="danger">
-      {error?.data?.message || "Error loading order"}
-    </Message>
+    <Message variant="danger" />
   ) : (
     <>
-      <h1>Order : {order._id}</h1>
+      {/* <h1>order : {or}</h1> */}
+      <h1>order : {order._id}</h1>
       <Row>
         <Col md={8}>
-          <ListGroup variant="flush">
-            <ListGroup.Item>
-              <h2>Shipping</h2>
+          <ListGroup>
+            <ListGroupItem>
+              <h2>shipping</h2>
               <p>
                 <strong>Name: </strong>
                 {order.user.name}
               </p>
               <p>
-                <strong>Email: </strong>
+                <strong>email: </strong>
                 {order.user.email}
-              </p>
+              </p>{" "}
               <p>
-                <strong>Address: </strong>
+                <strong>address: </strong>
                 {order.shippingAddress.address}, {order.shippingAddress.city},{" "}
-                {order.shippingAddress.postalCode},{" "}
                 {order.shippingAddress.country}
               </p>
               <p>
                 {order.isDelivered ? (
                   <Message variant="success">
-                    Delivered on:{" "}
-                    {new Date(order.deliveredAt).toLocaleDateString()}
+                    deliverd on :{order.deliveredAt}
                   </Message>
                 ) : (
-                  <Message variant="warning">Not Delivered</Message>
+                  <Message variant="danger">not deliverd</Message>
                 )}
               </p>
-            </ListGroup.Item>
-
-            <ListGroup.Item>
-              <h2>Payment Method</h2>
+            </ListGroupItem>
+            <ListGroupItem>
+              <h2>payment method</h2>
               <p>
-                <strong>Method: </strong>
+                <strong>method: </strong>
                 {order.paymentMethod}
               </p>
               {order.isPaid ? (
-                <Message variant="success">
-                  Paid on: {new Date(order.paidAt).toLocaleDateString()}
-                </Message>
+                <Message variant="success">Paid on :{order.paidAt}</Message>
               ) : (
-                <Message variant="warning">Not Paid</Message>
+                <Message variant="danger">not Paid</Message>
               )}
-            </ListGroup.Item>
-
-            <ListGroup.Item>
-              <h2>Order Items</h2>
+            </ListGroupItem>
+            <ListGroupItem>
+              <h2>Order items</h2>
               {order.orderItems.map((item, index) => (
                 <ListGroup.Item key={index}>
                   <Row>
                     <Col md={1}>
-                      <Image src={item.image} alt={item.name} fluid rounded />
+                      <Image src={item.image} fluid rounded />
                     </Col>
                     <Col>
-                      <Link to={`/product/${item.product}`}>{item.name}</Link>
+                      <Link to={`/products/${item.product}`}>{item.name}</Link>
                     </Col>
                     <Col md={4}>
                       {item.quantity} x ${item.price} = $
-                      {(item.quantity * item.price).toFixed(2)}
+                      {item.quantity * item.price}
                     </Col>
                   </Row>
                 </ListGroup.Item>
               ))}
-            </ListGroup.Item>
+            </ListGroupItem>
           </ListGroup>
         </Col>
-
         <Col md={4}>
           <Card>
-            <ListGroup variant="flush">
-              <ListGroup.Item>
-                <h2>Order Summary</h2>
-              </ListGroup.Item>
-              <ListGroup.Item>
+            <ListGroup>
+              <ListGroupItem>
+                <h2>Order summary</h2>
+              </ListGroupItem>
+              <ListGroupItem>
                 <Row>
-                  <Col>Items</Col>
-                  <Col>${order.itemsPrice.toFixed(2)}</Col>
+                  <Col>items</Col>
+                  <Col>${order.itemsPrice}</Col>
                 </Row>
                 <Row>
                   <Col>Shipping</Col>
-                  <Col>${order.shippingPrice.toFixed(2)}</Col>
+                  <Col>${order.shippingPrice}</Col>
                 </Row>
                 <Row>
-                  <Col>Tax</Col>
-                  <Col>${order.taxPrice.toFixed(2)}</Col>
+                  <Col>tax</Col>
+                  <Col>${order.taxPrice}</Col>
                 </Row>
                 <Row>
-                  <Col>
-                    <strong>Total</strong>
-                  </Col>
-                  <Col>
-                    <strong>${order.totalPrice.toFixed(2)}</strong>
-                  </Col>
+                  <Col>total</Col>
+                  <Col>${order.totalPrice}</Col>
                 </Row>
-              </ListGroup.Item>
-
+              </ListGroupItem>
               {!order.isPaid && (
-                <ListGroup.Item>
+                <ListGroupItem>
                   {loadingPay && <Loader />}
                   {isPending ? (
                     <Loader />
                   ) : (
                     <div>
-                      {/* 🔥 اخف زر الاختبار في production */}
-                      {process.env.NODE_ENV === "development" && (
-                        <Button
-                          onClick={onApproveTest}
-                          style={{ marginBottom: "10px" }}
-                          disabled={loadingPay}
-                        >
-                          Test Pay Order
-                        </Button>
-                      )}
+                      <Button
+                        onClick={onApproveTest}
+                        style={{ marginBottom: "10px" }}
+                      >
+                        test pay order
+                      </Button>
                       <PayPalButtons
                         onError={onError}
                         createOrder={createOrder}
                         onApprove={onApprove}
-                        disabled={loadingPay}
-                      />
+                      ></PayPalButtons>
                     </div>
                   )}
-                </ListGroup.Item>
+                </ListGroupItem>
               )}
+              {/* mark order as delivered */}
             </ListGroup>
           </Card>
         </Col>
