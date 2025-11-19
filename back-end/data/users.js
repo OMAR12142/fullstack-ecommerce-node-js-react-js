@@ -11,7 +11,7 @@ const users = [
     name: "omar selema",
     email: "omarselema@gmail.com",
     password: bycrypt.hashSync("123456", 10),
-    isAdmin: false,
+    isAdmin: true,
   },
   {
     name: "mohamed farid",
