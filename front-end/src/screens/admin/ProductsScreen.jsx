@@ -88,7 +88,11 @@ const ProductsScreen = () => {
               {data.products.map((product) => (
                 <tr key={product._id}>
                   <td>{product._id}</td>
-                  <td>{product.name}</td>
+                  <td>
+                    {product.name.length > 20
+                      ? product.name.slice(0, 20) + "..."
+                      : product.name}
+                  </td>
                   <td>${product.price}</td>
                   <td>{product.category}</td>
                   <td>{product.brand}</td>

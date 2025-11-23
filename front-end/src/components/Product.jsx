@@ -9,10 +9,10 @@ export const Product = ({ product }) => {
         <Card.Img
           src={product.image}
           variant="top"
-          className="card-image-custom"
+          className="card-image-custom  "
           style={{
             height: "200px",
-            objectFit: "cover",
+            objectFit: "contain",
             width: "100%",
           }}
         />
@@ -38,15 +38,10 @@ export const Product = ({ product }) => {
           </Card.Title>
         </Link>
 
-        {/* منطقة التقييم */}
         <div className="app-product-rating mb-2 mt-auto">
-          <Rating
-            value={product.rating}
-            text={`${product.numReviews} reviews`}
-          />
+          <Rating value={product.rating} />
         </div>
 
-        {/* السعر */}
         <Card.Text as="h4" className="app-product-price text-black fw-bold m-0">
           $ {product.price}
         </Card.Text>
@@ -54,3 +49,5 @@ export const Product = ({ product }) => {
     </Card>
   );
 };
+
+export default Product;

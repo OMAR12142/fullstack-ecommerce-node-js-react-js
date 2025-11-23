@@ -594,7 +594,6 @@ a:hover {
 }
 
 .app-dropdown-item {
-  color: var(--color-dark-primary) !important;
   font-weight: 500;
   padding: 0.7rem 1.2rem !important;
   transition: all 0.3s ease;

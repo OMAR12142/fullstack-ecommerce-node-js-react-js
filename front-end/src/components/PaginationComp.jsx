@@ -1,29 +1,36 @@
-import React from "react";
 import { Pagination } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
 const PaginationComp = ({ pages, page, isAdmin = false, keyword = "" }) => {
+  if (pages <= 1) return null; // لو صفحة واحدة مش محتاج Pagination
+
   return (
-    pages > 1 && (
-      <Pagination className="app-pagination">
-        {[...Array(pages).keys()].map((x) => (
+    <Pagination className="app-pagination">
+      {[...Array(pages).keys()].map((x) => {
+        let link;
+
+        if (isAdmin) {
+          link = `/admin/productslist/${x + 1}`;
+        } else {
+          if (keyword) {
+            link = `/allproducts/search/${keyword}/page/${x + 1}`;
+          } else {
+            link = `/allproducts/page/${x + 1}`;
+          }
+        }
+
+        return (
           <Pagination.Item
             key={x + 1}
             active={x + 1 === page}
             as={Link}
-            to={
-              !isAdmin
-                ? keyword
-                  ? `/search/${keyword}/page/${x + 1}`
-                  : `/page/${x + 1}`
-                : `/admin/productslist/${x + 1}`
-            }
+            to={link}
           >
             {x + 1}
           </Pagination.Item>
-        ))}
-      </Pagination>
-    )
+        );
+      })}
+    </Pagination>
   );
 };
 

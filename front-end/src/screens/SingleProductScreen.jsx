@@ -52,7 +52,6 @@ export const SingleProductScreen = () => {
 
   function addToCartHandler() {
     dispatch(addToCart({ ...product, quantity }));
-    navigate("/cart");
   }
 
   return (
@@ -82,7 +81,6 @@ export const SingleProductScreen = () => {
                   <h3 className="app-product-name">{product.name}</h3>
                 </ListGroup.Item>
 
-                {/* 1. التقييم */}
                 <ListGroup.Item className="border-0 p-0 mb-3">
                   <Rating
                     value={product.rating}
@@ -90,7 +88,6 @@ export const SingleProductScreen = () => {
                   />
                 </ListGroup.Item>
 
-                {/* 2. الوصف */}
                 <ListGroup.Item className="border-0 p-0 app-product-description">
                   <p>{product.description}</p>
                 </ListGroup.Item>
@@ -100,7 +97,6 @@ export const SingleProductScreen = () => {
             <Col md={3} className="app-cart-box-col">
               <Card className="app-cart-card border-0 shadow-sm">
                 <ListGroup variant="flush">
-                  {/* 3. السعر */}
                   <ListGroup.Item className="app-price-item">
                     <Row>
                       <Col className="fw-bold"> Price :</Col>
@@ -112,7 +108,6 @@ export const SingleProductScreen = () => {
                     </Row>
                   </ListGroup.Item>
 
-                  {/* 4. الحالة */}
                   <ListGroup.Item>
                     <Row>
                       <Col className="fw-bold"> Status :</Col>
@@ -132,7 +127,6 @@ export const SingleProductScreen = () => {
                     </Row>
                   </ListGroup.Item>
 
-                  {/* 5. الكمية */}
                   {product.countInStock > 0 && (
                     <ListGroup.Item>
                       <Row className="align-items-center">
@@ -161,7 +155,7 @@ export const SingleProductScreen = () => {
 
                   <ListGroup.Item className="p-3">
                     <Button
-                      className="app-add-to-cart-btn w-100" // 👈🏻 تحديد عرض 100%
+                      className="app-add-to-cart-btn w-100"
                       type="button"
                       onClick={addToCartHandler}
                       disabled={product.countInStock === 0}
@@ -174,7 +168,6 @@ export const SingleProductScreen = () => {
             </Col>
           </Row>
 
-          {/* 6. قسم المراجعات */}
           <Row className="my-5 app-reviews-section">
             <Col md={6}>
               <h2 className="app-reviews-heading">REVIEWS</h2>

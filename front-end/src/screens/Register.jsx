@@ -51,7 +51,7 @@ export const Register = () => {
     }
   };
   return (
-    <div className="app-auth-screen-wrapper">
+    <div className="app-auth-screen-wrapper mt-5">
       <FormContainer className="app-auth-container-custom">
         <h1 className="mb-4 app-auth-heading">Create Account</h1>
         <Form onSubmit={submitHandler}>

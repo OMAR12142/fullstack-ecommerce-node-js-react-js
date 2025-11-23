@@ -44,7 +44,7 @@ export const Login = () => {
     }
   };
   return (
-    <div className="app-auth-screen-wrapper">
+    <div className="app-auth-screen-wrapper mt-5">
       <FormContainer className="app-auth-container-custom">
         <h1 className="mb-4 app-auth-heading">Sign In</h1>
         <Form onSubmit={submitHandler}>

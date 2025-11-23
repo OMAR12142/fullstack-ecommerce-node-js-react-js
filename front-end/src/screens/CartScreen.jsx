@@ -36,12 +36,15 @@ export const CartScreen = () => {
   return (
     <Row className="mt-4 app-cart-screen">
       <Col md={8}>
-        <h1 className="mb-4 app-cart-heading">Shopping Cart</h1>
-
+        <h1 className="mb-4 app-cart-heading text-black">
+          <strong>Shopping Cart</strong>
+        </h1>
         {cartItems.length === 0 ? (
-          <Message>
-            <p>Your cart is empty</p>
-            <Link to={"/"} className="app-link-primary fw-bold">
+          <Message className=" bg-black text-white p-4">
+            <p className="text-black">
+              <strong>Your cart is empty</strong>
+            </p>
+            <Link to={"/"} className="app-link-primary text-black fw-bold">
               Go Back
             </Link>
           </Message>

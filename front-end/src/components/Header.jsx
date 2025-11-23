@@ -39,7 +39,7 @@ const Header = () => {
       >
         <Container>
           <LinkContainer to="/">
-            <Navbar.Brand className="app-logo-text">
+            <Navbar.Brand className="app-logo-text text-decoration-none">
               <img
                 src={nav_logo}
                 alt="ProShop Logo"
@@ -67,12 +67,18 @@ const Header = () => {
                   <strong>Home</strong>
                 </Nav.Link>
               </LinkContainer>
+              <LinkContainer to="allproducts">
+                <Nav.Link className="nav-link-custom text-decoration-none">
+                  <strong>Products</strong>
+                </Nav.Link>
+              </LinkContainer>
+
               {/* Cart Icon */}
               <LinkContainer to="/cart">
                 <Nav.Link className="nav-link-custom app-cart-link text-decoration-none">
                   <div className="app-cart-container text-decoration-none">
                     <FaShoppingCart className="app-cart-icon" />
-                    <strong className="app-cart-text ">Cart</strong>
+                    <strong className="app-cart-text">Cart</strong>
                     {cartItems.length > 0 && (
                       <Badge pill className="app-cart-badge bg-black">
                         {cartItems.reduce((a, c) => a + c.quantity, 0)}
@@ -86,7 +92,7 @@ const Header = () => {
                 <>
                   <NavDropdown
                     title={
-                      <strong className="app-user-name text-decoration-none ">
+                      <strong className="app-user-name text-decoration-none">
                         <FaUser className="me-1 text-decoration-none" />
                         {userInfo.name}
                       </strong>
@@ -96,7 +102,7 @@ const Header = () => {
                     style={{ position: "relative", zIndex: 1031 }}
                   >
                     <LinkContainer to="/profile">
-                      <NavDropdown.Item className="app-dropdown-item text-decoration-none">
+                      <NavDropdown.Item className="bg-white text-black app-dropdown-item text-decoration-none">
                         Profile
                       </NavDropdown.Item>
                     </LinkContainer>
@@ -111,23 +117,23 @@ const Header = () => {
 
                   {userInfo.isAdmin && (
                     <NavDropdown
-                      title="Admin"
+                      title="AdminDashbord"
                       id="adminmenu"
                       className="nav-link-custom app-admin-dropdown text-decoration-none"
                       style={{ position: "relative", zIndex: 1031 }}
                     >
                       <LinkContainer to="/admin/productslist">
-                        <NavDropdown.Item className="app-dropdown-item">
+                        <NavDropdown.Item className="bg-white app-dropdown-item text-decoration-none">
                           Products
                         </NavDropdown.Item>
                       </LinkContainer>
                       <LinkContainer to="/admin/orderlist">
-                        <NavDropdown.Item className="app-dropdown-item">
+                        <NavDropdown.Item className="app-dropdown-item text-decoration-none">
                           Orders
                         </NavDropdown.Item>
                       </LinkContainer>
                       <LinkContainer to="/admin/userlist">
-                        <NavDropdown.Item className="app-dropdown-item">
+                        <NavDropdown.Item className="app-dropdown-item text-decoration-none">
                           Users
                         </NavDropdown.Item>
                       </LinkContainer>
@@ -137,8 +143,8 @@ const Header = () => {
               ) : (
                 /* Sign In Link */
                 <LinkContainer to="/login">
-                  <Nav.Link className="nav-link-custom app-signin-link">
-                    <FaUser className="me-1" />
+                  <Nav.Link className="nav-link-custom app-signin-link text-decoration-none">
+                    <FaUser className="me-1 text-decoration-none" />
                     Sign In
                   </Nav.Link>
                 </LinkContainer>

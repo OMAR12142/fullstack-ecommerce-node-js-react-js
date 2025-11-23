@@ -43,17 +43,17 @@ const Footer = () => {
                 </a>
               </li>
               <li>
-                <a href="/products" className="app-footer-link">
+                <a href="/allproducts" className="app-footer-link">
                   Products
                 </a>
               </li>
               <li>
-                <a href="/about" className="app-footer-link">
+                <a href="#" className="app-footer-link">
                   About Us
                 </a>
               </li>
               <li>
-                <a href="/contact" className="app-footer-link">
+                <a href="#" className="app-footer-link">
                   Contact
                 </a>
               </li>
@@ -69,17 +69,12 @@ const Footer = () => {
                 </a>
               </li>
               <li>
-                <a href="/returns" className="app-footer-link">
-                  Returns
-                </a>
-              </li>
-              <li>
-                <a href="/privacy" className="app-footer-link">
+                <a href="#" className="app-footer-link">
                   Privacy Policy
                 </a>
               </li>
               <li>
-                <a href="/terms" className="app-footer-link">
+                <a href="#" className="app-footer-link">
                   Terms of Service
                 </a>
               </li>
