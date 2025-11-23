@@ -2,13 +2,13 @@ import { useState, useEffect } from "react";
 import { Form, Row, Col, Button, Table, Card } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { useProfileMutation } from "../slices/usersApiSlice";
-import Loader from "../components/loader";
 import { toast } from "react-toastify";
 import Message from "../components/Message";
 import { FaTimes, FaEye, FaUserEdit } from "react-icons/fa";
 import { LinkContainer } from "react-router-bootstrap";
 import { setCredentails } from "../slices/authSlice";
 import { useGetMyOrdersQuery } from "../slices/ordersApiSlice.JS";
+import Loader from "../components/Loader";
 
 const Profile = () => {
   const [name, setName] = useState("");
@@ -56,7 +56,6 @@ const Profile = () => {
 
   return (
     <Row className="app-profile-container">
-      {/* Profile Update Section */}
       <Col md={4}>
         <Card className="app-profile-card shadow-sm border-0">
           <Card.Header className="app-profile-header bg-black rounded text-white">
