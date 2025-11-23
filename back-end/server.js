@@ -42,6 +42,20 @@ app.get('/api/config/paypal', (req, res) =>
   res.send({ clientId: process.env.PAYPAL_CLIENT_ID })
 );
 
+
+
+
+if(process.env.NODE_ENV==='production'){
+    app.use(express.static(path.join(__dirname,'/front-end/dist')))
+    app.get('*',(req,res)=>{
+        res.sendFile(path.resolve(__dirname,'front-end','dist','index.html'))
+    })
+}else{
+    app.get('/',(req,res)=>{
+        res.send('api is running....')
+    })
+}
+
 app.use(notFound)
 app.use(errorHandler)
 

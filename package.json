@@ -16,11 +16,12 @@
   "main": "server.js",
   "scripts": {
     "start": "node back-end/server.js",
-    "server": "nodemon  back-end/server.js",
+    "server": "nodemon back-end/server.js",
     "client": "npm run dev --prefix front-end",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
-    "data:import": "node back-end/seeder.js",
-    "data:destroy": "node back-end/seeder.js -d"
+    "data:import": "node back-end/seeder",
+    "data:destroy": "node back-end/seeder -d",
+    "build": "npm install && npm install --prefix front-end && npm run build --prefix front-end"
   },
   "dependencies": {
     "bcryptjs": "^3.0.3",
