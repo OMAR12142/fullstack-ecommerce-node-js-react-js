@@ -28,13 +28,15 @@ const PaymentScreen = () => {
   };
 
   return (
-    <FormContainer>
+    <FormContainer className="app-auth-container-custom">
       <CheckoutSteps step1 step2 step3 />
-      <h1>Payment Method</h1>
+      <h1 className="app-auth-heading">Payment Method</h1>
 
       <Form onSubmit={submitHandler}>
         <Form.Group>
-          <Form.Label as="legend">Select Method</Form.Label>
+          <Form.Label as="legend" className="fw-bold app-payment-label">
+            Select Method
+          </Form.Label>
           <Col>
             <Form.Check
               type="radio"
@@ -44,10 +46,15 @@ const PaymentScreen = () => {
               value="paypal"
               checked={paymentMethod === "paypal"}
               onChange={(e) => setPaymentMethod(e.target.value)}
+              className="app-radio-custom my-3"
             />
           </Col>
 
-          <Button type="submit" variant="primary" className="mt-3">
+          <Button
+            type="submit"
+            variant="primary"
+            className="mt-3 w-100 app-auth-btn-custom"
+          >
             Continue
           </Button>
         </Form.Group>

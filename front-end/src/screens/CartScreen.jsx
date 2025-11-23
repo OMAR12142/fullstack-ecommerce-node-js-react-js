@@ -34,29 +34,41 @@ export const CartScreen = () => {
   };
 
   return (
-    <Row className="mt-4">
+    <Row className="mt-4 app-cart-screen">
       <Col md={8}>
-        <h1 className="mb-4">Shopping Cart</h1>
+        <h1 className="mb-4 app-cart-heading">Shopping Cart</h1>
 
         {cartItems.length === 0 ? (
           <Message>
             <p>Your cart is empty</p>
-            <Link to={"/"}>Go Back</Link>
+            <Link to={"/"} className="app-link-primary fw-bold">
+              Go Back
+            </Link>
           </Message>
         ) : (
-          <ListGroup variant="flush">
+          <ListGroup variant="flush" className="app-cart-list">
             {cartItems.map((item) => (
-              <ListGroup.Item key={item._id} className="py-3">
+              <ListGroup.Item
+                key={item._id}
+                className="py-3 px-0 app-cart-item"
+              >
                 <Row className="align-items-center">
                   <Col md={2}>
-                    <Image src={item.image} fluid rounded />
+                    <Image
+                      src={item.image}
+                      fluid
+                      rounded
+                      className="app-cart-image"
+                    />
                   </Col>
 
-                  <Col md={3} className="fw-semibold">
-                    <Link to={`/product/${item._id}`}>{item.name}</Link>
+                  <Col md={3} className="fw-semibold app-item-name">
+                    <Link to={`/product/${item._id}`} className="text-dark">
+                      {item.name}
+                    </Link>
                   </Col>
 
-                  <Col md={2} className="fw-bold">
+                  <Col md={2} className="fw-bold app-item-price">
                     ${item.price}
                   </Col>
 
@@ -67,6 +79,7 @@ export const CartScreen = () => {
                       onChange={(e) =>
                         addToCartHandler(item, Number(e.target.value))
                       }
+                      className="app-qty-select-cart"
                     >
                       {[...Array(item.countInStock).keys()].map((x) => (
                         <option key={x + 1} value={x + 1}>
@@ -81,6 +94,7 @@ export const CartScreen = () => {
                       variant="light"
                       type="button"
                       onClick={() => deleteItemHandler(item._id)}
+                      className="app-remove-btn"
                     >
                       <FaTrash />
                     </Button>
@@ -93,14 +107,14 @@ export const CartScreen = () => {
       </Col>
 
       <Col md={4}>
-        <Card className="p-3 shadow-sm">
+        <Card className="p-4 app-summary-card shadow-lg border-0">
           <ListGroup variant="flush">
-            <ListGroup.Item className="py-3">
-              <h4>
+            <ListGroup.Item className="py-3 border-0">
+              <h4 className="fw-bold app-subtotal-text">
                 Subtotal (
                 {cartItems.reduce((acc, item) => acc + item.quantity, 0)}) items
               </h4>
-              <h3 className="fw-bold text-success mt-2">
+              <h3 className="fw-bold app-total-price mt-3">
                 $
                 {cartItems
                   .reduce((acc, item) => acc + item.quantity * item.price, 0)
@@ -108,10 +122,10 @@ export const CartScreen = () => {
               </h3>
             </ListGroup.Item>
 
-            <ListGroup.Item className="py-3">
+            <ListGroup.Item className="pt-3 border-0">
               <Button
                 type="button"
-                className="w-100"
+                className="w-100 app-checkout-btn"
                 disabled={cartItems.length === 0}
                 onClick={checkOutHandler}
               >

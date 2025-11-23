@@ -29,52 +29,60 @@ const ShippingScreen = () => {
   };
 
   return (
-    <FormContainer>
+    <FormContainer className="app-auth-container-custom">
       <CheckoutSteps step1 step2 />
 
-      <h1>Shipping</h1>
+      <h1 className="app-auth-heading">Shipping</h1>
       <Form onSubmit={submitHandler}>
         <FormGroup controlId="address" className="my-2">
-          <Form.Label>Address</Form.Label>
+          <Form.Label className="fw-bold">Address</Form.Label>
           <Form.Control
             type="text"
-            placeholder="enter address"
+            placeholder="Enter address"
             value={address}
             required
             onChange={(e) => setAddress(e.target.value)}
+            className="app-form-control-custom"
           ></Form.Control>
         </FormGroup>
         <FormGroup controlId="city" className="my-2">
-          <Form.Label>city</Form.Label>
+          <Form.Label className="fw-bold">City</Form.Label>
           <Form.Control
             type="text"
-            placeholder="enter city"
+            placeholder="Enter city"
             value={city}
             required
             onChange={(e) => setCity(e.target.value)}
+            className="app-form-control-custom"
           ></Form.Control>
         </FormGroup>
         <FormGroup controlId="postalcode" className="my-2">
-          <Form.Label>postal Code</Form.Label>
+          <Form.Label className="fw-bold">Postal Code</Form.Label>
           <Form.Control
             type="text"
             required
-            placeholder="enter postal Code"
+            placeholder="Enter postal code"
             value={postalCode}
             onChange={(e) => setPostalCode(e.target.value)}
+            className="app-form-control-custom"
           ></Form.Control>
         </FormGroup>
         <FormGroup controlId="country" className="my-2">
-          <Form.Label>country</Form.Label>
+          <Form.Label className="fw-bold">Country</Form.Label>
           <Form.Control
             type="text"
             required
-            placeholder="enter country"
+            placeholder="Enter country"
             value={country}
             onChange={(e) => setCountry(e.target.value)}
+            className="app-form-control-custom"
           ></Form.Control>
         </FormGroup>
-        <Button type="submit" variant="primary" className="my-2">
+        <Button
+          type="submit"
+          variant="primary"
+          className="my-2 w-100 app-auth-btn-custom"
+        >
           Continue
         </Button>
       </Form>

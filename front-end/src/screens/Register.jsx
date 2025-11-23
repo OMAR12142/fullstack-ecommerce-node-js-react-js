@@ -51,64 +51,71 @@ export const Register = () => {
     }
   };
   return (
-    <div>
-      <FormContainer>
-        <h1>Register</h1>
+    <div className="app-auth-screen-wrapper">
+      <FormContainer className="app-auth-container-custom">
+        <h1 className="mb-4 app-auth-heading">Create Account</h1>
         <Form onSubmit={submitHandler}>
           <Form.Group controlId="name" className="my-3">
-            <Form.Label>name</Form.Label>
+            <Form.Label className="fw-bold">Name</Form.Label>
             <Form.Control
               type="text"
               placeholder="Enter your name"
               value={name}
               onChange={(e) => setName(e.target.value)}
+              className="app-form-control-custom"
             />
           </Form.Group>
 
           <Form.Group controlId="email" className="my-3">
-            <Form.Label>Email Address</Form.Label>
+            <Form.Label className="fw-bold">Email Address</Form.Label>
             <Form.Control
               type="email"
               placeholder="Enter Email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              className="app-form-control-custom"
             />
           </Form.Group>
           <Form.Group controlId="password" className="my-3">
-            <Form.Label>password</Form.Label>
+            <Form.Label className="fw-bold">Password</Form.Label>
             <Form.Control
               type="password"
               placeholder="Enter Password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              className="app-form-control-custom"
             />
           </Form.Group>
 
           <Form.Group controlId="confirmPassword" className="my-3">
-            <Form.Label>Confirm Password</Form.Label>
+            <Form.Label className="fw-bold">Confirm Password</Form.Label>
             <Form.Control
               type="password"
               placeholder="Confirm Password"
               value={confirmPassword}
               onChange={(e) => setconfirmPassword(e.target.value)}
+              className="app-form-control-custom"
             />
           </Form.Group>
 
           <Button
             type="submit"
             variant="primary"
-            className="mt-3"
+            className="mt-4 w-100 app-auth-btn-custom"
             disabled={isLoading}
           >
             Register
           </Button>
           {isLoading && <Loader />}
         </Form>
-        <Row className="py-3">
-          <span>
-            already have an account?{" "}
-            <Link to={redirect ? `/login?redirect=${redirect}` : "/login"}>
-              login
+        <Row className="py-3 app-auth-link-row">
+          <span className="text-center">
+            Already have an account?{" "}
+            <Link
+              to={redirect ? `/login?redirect=${redirect}` : "/login"}
+              className="app-auth-link-custom"
+            >
+              Login
             </Link>
           </span>
         </Row>

@@ -51,43 +51,55 @@ const PlaceOrderScreen = () => {
   return (
     <>
       <CheckoutSteps step1 step2 step3 step4 />
-      <Row>
+      <Row className="app-place-order-row">
         <Col md={8}>
-          <ListGroup>
-            <ListGroupItem>
-              <h2>shipping</h2>
-              <p>
-                <strong>address:</strong>
-                {cart.shippingAddress.address},{cart.shippingAddress.city}
-                {cart.shippingAddress.postalCode}
+          <ListGroup variant="flush" className="app-order-sections">
+            <ListGroupItem className="app-order-section-item">
+              <h2 className="app-section-heading">Shipping</h2>
+              <p className="app-shipping-info">
+                <strong>Address:</strong>
+                {cart.shippingAddress.address}, {cart.shippingAddress.city},{" "}
+                {cart.shippingAddress.postalCode},{" "}
+                {cart.shippingAddress.country}
               </p>
             </ListGroupItem>
-            <ListGroupItem>
-              <h2>payment method</h2>
-              <strong>method:</strong>
-              {cart.paymentMethod}
+            <ListGroupItem className="app-order-section-item">
+              <h2 className="app-section-heading">Payment Method</h2>
+              <p className="app-payment-info">
+                <strong>Method:</strong> {cart.paymentMethod}
+              </p>
             </ListGroupItem>
-            <ListGroupItem>
-              <h2>order items</h2>
+            <ListGroupItem className="app-order-section-item">
+              <h2 className="app-section-heading">Order Items</h2>
               {cart.cartItems.length === 0 ? (
-                <Message>your cart is empty</Message>
+                <Message>Your cart is empty</Message>
               ) : (
-                <ListGroup>
+                <ListGroup variant="flush" className="app-order-items-list">
                   {cart.cartItems.map((item, index) => {
                     return (
-                      <ListGroupItem key={index}>
-                        <Row>
+                      <ListGroupItem key={index} className="app-order-item">
+                        <Row className="align-items-center">
                           <Col md={1}>
-                            <Image src={item.image} fluid rounded />
+                            <Image
+                              src={item.image}
+                              fluid
+                              rounded
+                              className="app-item-image"
+                            />
                           </Col>
-                          <Col>
-                            <Link to={`/products/${item.product}`}>
+                          <Col md={5}>
+                            <Link
+                              to={`/product/${item.product}`}
+                              className="app-item-link"
+                            >
                               {item.name}
                             </Link>
                           </Col>
-                          <Col md={4}>
-                            {item.quantity} x ${item.price} = $
-                            {item.quantity * item.price}
+                          <Col md={4} className="text-end app-item-price">
+                            {item.quantity} x ${item.price} ={" "}
+                            <strong>
+                              ${(item.quantity * item.price).toFixed(2)}
+                            </strong>
                           </Col>
                         </Row>
                       </ListGroupItem>
@@ -99,49 +111,53 @@ const PlaceOrderScreen = () => {
           </ListGroup>
         </Col>
         <Col md={4}>
-          <ListGroup variant="flush">
-            <ListGroupItem>
-              <h2>order summary</h2>
+          <ListGroup variant="flush" className="app-order-summary">
+            <ListGroupItem className="app-summary-header">
+              <h2 className="app-section-heading mb-0">Order Summary</h2>
+            </ListGroupItem>
+            <ListGroupItem className="app-summary-item">
+              <Row>
+                <Col className="fw-bold">Items:</Col>
+                <Col className="text-end">${cart.itemsPrice}</Col>
+              </Row>
+            </ListGroupItem>
+            <ListGroupItem className="app-summary-item">
+              <Row>
+                <Col className="fw-bold">Shipping:</Col>
+                <Col className="text-end">${cart.shippingPrice}</Col>
+              </Row>
+            </ListGroupItem>
+            <ListGroupItem className="app-summary-item">
+              <Row>
+                <Col className="fw-bold">Tax:</Col>
+                <Col className="text-end">${cart.taxPrice}</Col>
+              </Row>
+            </ListGroupItem>
+            <ListGroupItem className="app-summary-total-item">
+              <Row>
+                <Col className="fw-bold app-final-total-text">Total:</Col>
+                <Col className="text-end fw-bold app-final-total-price">
+                  ${cart.totalPrice}
+                </Col>
+              </Row>
+            </ListGroupItem>
+            {error && (
               <ListGroupItem>
-                <Row>
-                  <Col>items:</Col>
-                  <Col>${cart.itemsPrice}</Col>
-                </Row>
-              </ListGroupItem>
-              <ListGroupItem>
-                <Row>
-                  <Col>shipping:</Col>
-                  <Col>${cart.shippingPrice}</Col>
-                </Row>
-              </ListGroupItem>
-              <ListGroupItem>
-                <Row>
-                  <Col>tax:</Col>
-                  <Col>${cart.taxPrice}</Col>
-                </Row>
-              </ListGroupItem>
-              <ListGroupItem>
-                <Row>
-                  <Col>total:</Col>
-                  <Col>${cart.totalPrice}</Col>
-                </Row>
-              </ListGroupItem>
-              {error && (
                 <Message variant="danger">
                   {error?.data?.message || error.error}
                 </Message>
-              )}
-              <ListGroupItem>
-                <Button
-                  type="button"
-                  className="btn-block"
-                  disabled={cart.cartItems.length === 0}
-                  onClick={placeOrderHandler}
-                >
-                  place order
-                </Button>
-                {isLoading && <Loader />}
               </ListGroupItem>
+            )}
+            <ListGroupItem className="app-place-order-btn-section">
+              <Button
+                type="button"
+                className="w-100 app-place-order-btn"
+                disabled={cart.cartItems.length === 0}
+                onClick={placeOrderHandler}
+              >
+                Place Order
+              </Button>
+              {isLoading && <Loader />}
             </ListGroupItem>
           </ListGroup>
         </Col>

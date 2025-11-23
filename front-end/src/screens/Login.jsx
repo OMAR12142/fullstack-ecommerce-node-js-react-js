@@ -44,43 +44,46 @@ export const Login = () => {
     }
   };
   return (
-    <div>
-      <FormContainer>
-        <h1>Login</h1>
+    <div className="app-auth-screen-wrapper">
+      <FormContainer className="app-auth-container-custom">
+        <h1 className="mb-4 app-auth-heading">Sign In</h1>
         <Form onSubmit={submitHandler}>
           <Form.Group controlId="email" className="my-3">
-            <Form.Label>Email Address</Form.Label>
+            <Form.Label className="fw-bold">Email Address</Form.Label>
             <Form.Control
               type="email"
               placeholder="Enter Email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              className="app-form-control-custom"
             />
           </Form.Group>
           <Form.Group controlId="password" className="my-3">
-            <Form.Label>password</Form.Label>
+            <Form.Label className="fw-bold">Password</Form.Label>
             <Form.Control
               type="password"
               placeholder="Enter Password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              className="app-form-control-custom"
             />
           </Form.Group>
           <Button
             type="submit"
             variant="primary"
-            className="mt-3"
+            className="mt-4 w-100 app-auth-btn-custom"
             disabled={isLoading}
           >
-            Login
+            Sign In
           </Button>
           {isLoading && <Loader />}
         </Form>
-        <Row className="py-3">
-          <span>
+        <Row className="py-3 app-auth-link-row">
+          <span className="text-center">
             New customer?{" "}
             <Link
               to={redirect ? `/register?redirect=${redirect}` : "/register"}
+              className="app-auth-link-custom"
             >
               Register
             </Link>

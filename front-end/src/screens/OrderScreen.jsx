@@ -17,6 +17,7 @@ import { usePayOrderMutation } from "../slices/ordersApiSlice.JS";
 import { useSelector } from "react-redux";
 import { useGetPayPalClientIdQuery } from "../slices/ordersApiSlice.JS";
 import { toast } from "react-toastify";
+import { useDeliverOrderMutation } from "../slices/ordersApiSlice.JS";
 
 const OrderScreen = () => {
   const { id: orderId } = useParams();
@@ -29,6 +30,8 @@ const OrderScreen = () => {
   } = useGetOrderDetailsQuery(orderId);
 
   const [payOrder, { isLoading: loadingPay }] = usePayOrderMutation();
+  const [deliverOrder, { isLoading: loadingDeliver }] =
+    useDeliverOrderMutation();
 
   const [{ isPending }, paypalDispatch] = usePayPalScriptReducer();
 
@@ -40,7 +43,6 @@ const OrderScreen = () => {
 
   const { userInfo } = useSelector((state) => state.auth);
 
-  //   console.log(order);
   useEffect(() => {
     if (!errorPayPal && !loadingPayPal && paypal?.clientId) {
       const loadPayPalScript = async () => {
@@ -63,7 +65,6 @@ const OrderScreen = () => {
 
   function onApprove(data, actions) {
     return actions.order.capture().then(async function (details) {
-      console.log("PayPal Details Received:", details);
       try {
         await payOrder({ orderId, details }).unwrap();
         refetch();
@@ -97,68 +98,105 @@ const OrderScreen = () => {
       });
   }
 
+  const DeliverOrderHandler = async () => {
+    try {
+      await deliverOrder(orderId).unwrap();
+      refetch();
+      toast.success("Order Delivered");
+    } catch (err) {
+      toast.error(err?.data?.message || err.message);
+    }
+  };
+
   return isLoading ? (
     <Loader />
   ) : error ? (
     <Message variant="danger" />
   ) : (
     <>
-      {/* <h1>order : {or}</h1> */}
-      <h1>order : {order._id}</h1>
-      <Row>
+      <h1 className="app-order-id-heading">ORDER ID: {order._id}</h1>
+      <Row className="app-order-details-row">
         <Col md={8}>
-          <ListGroup>
-            <ListGroupItem>
-              <h2>shipping</h2>
-              <p>
-                <strong>Name: </strong>
+          <ListGroup variant="flush" className="app-order-info-list">
+            <ListGroupItem className="app-order-section-item">
+              <h2 className="app-section-heading">Shipping</h2>
+              <p className="mb-1">
+                <strong className="fw-bold">Name: </strong>
                 {order.user.name}
               </p>
-              <p>
-                <strong>email: </strong>
-                {order.user.email}
-              </p>{" "}
-              <p>
-                <strong>address: </strong>
-                {order.shippingAddress.address}, {order.shippingAddress.city},{" "}
+              <p className="mb-1">
+                <strong className="fw-bold">Email: </strong>
+                <a
+                  href={`mailto:${order.user.email}`}
+                  className="app-link-primary"
+                >
+                  {order.user.email}
+                </a>
+              </p>
+              <p className="mb-3">
+                <strong className="fw-bold">Address: </strong>
+                {order.shippingAddress.address}, {order.shippingAddress.city},
                 {order.shippingAddress.country}
               </p>
-              <p>
+              <div>
                 {order.isDelivered ? (
-                  <Message variant="success">
-                    deliverd on :{order.deliveredAt}
+                  <Message variant="success" className="app-status-message">
+                    Delivered on: {order.deliveredAt.substring(0, 10)}
                   </Message>
                 ) : (
-                  <Message variant="danger">not deliverd</Message>
+                  <Message variant="danger" className="app-status-message">
+                    Not Delivered
+                  </Message>
                 )}
-              </p>
+              </div>
             </ListGroupItem>
-            <ListGroupItem>
-              <h2>payment method</h2>
-              <p>
-                <strong>method: </strong>
-                {order.paymentMethod}
-              </p>
-              {order.isPaid ? (
-                <Message variant="success">Paid on :{order.paidAt}</Message>
-              ) : (
-                <Message variant="danger">not Paid</Message>
-              )}
+
+            <ListGroupItem className="app-order-section-item">
+              <h2 className="app-section-heading">Payment Method</h2>
+              <p className="mb-1 fw-bold">Method: {order.paymentMethod}</p>
+              <div>
+                {order.isPaid ? (
+                  <Message variant="success" className="app-status-message">
+                    Paid on: {order.paidAt.substring(0, 10)}
+                  </Message>
+                ) : (
+                  <Message variant="danger" className="app-status-message">
+                    Not Paid
+                  </Message>
+                )}
+              </div>
             </ListGroupItem>
-            <ListGroupItem>
-              <h2>Order items</h2>
+
+            <ListGroupItem className="app-order-section-item">
+              <h2 className="app-section-heading">Order Items</h2>
               {order.orderItems.map((item, index) => (
-                <ListGroup.Item key={index}>
-                  <Row>
+                <ListGroup.Item
+                  key={index}
+                  className="app-order-item-list-item"
+                >
+                  <Row className="align-items-center">
                     <Col md={1}>
-                      <Image src={item.image} fluid rounded />
+                      <Image
+                        src={item.image}
+                        alt={item.name}
+                        fluid
+                        rounded
+                        className="app-item-image"
+                      />
                     </Col>
-                    <Col>
-                      <Link to={`/products/${item.product}`}>{item.name}</Link>
+                    <Col className="fw-bold">
+                      <Link
+                        to={`/products/${item.product}`}
+                        className="app-link-primary"
+                      >
+                        {item.name}
+                      </Link>
                     </Col>
-                    <Col md={4}>
-                      {item.quantity} x ${item.price} = $
-                      {item.quantity * item.price}
+                    <Col md={4} className="text-end fw-bold">
+                      {item.quantity} x ${item.price} ={" "}
+                      <span className="app-item-total-price">
+                        ${(item.quantity * item.price).toFixed(2)}
+                      </span>
                     </Col>
                   </Row>
                 </ListGroup.Item>
@@ -167,31 +205,39 @@ const OrderScreen = () => {
           </ListGroup>
         </Col>
         <Col md={4}>
-          <Card>
-            <ListGroup>
-              <ListGroupItem>
-                <h2>Order summary</h2>
+          <Card className="app-summary-card shadow-lg border-0">
+            <ListGroup variant="flush">
+              <ListGroupItem className="app-summary-header">
+                <h2 className="app-section-heading mb-0">Order Summary</h2>
               </ListGroupItem>
-              <ListGroupItem>
+              <ListGroupItem className="app-summary-item">
                 <Row>
-                  <Col>items</Col>
-                  <Col>${order.itemsPrice}</Col>
+                  <Col className="fw-bold">Items Price:</Col>
+                  <Col className="text-end">${order.itemsPrice}</Col>
                 </Row>
+              </ListGroupItem>
+              <ListGroupItem className="app-summary-item">
                 <Row>
-                  <Col>Shipping</Col>
-                  <Col>${order.shippingPrice}</Col>
+                  <Col className="fw-bold">Shipping:</Col>
+                  <Col className="text-end">${order.shippingPrice}</Col>
                 </Row>
+              </ListGroupItem>
+              <ListGroupItem className="app-summary-item">
                 <Row>
-                  <Col>tax</Col>
-                  <Col>${order.taxPrice}</Col>
+                  <Col className="fw-bold">Tax:</Col>
+                  <Col className="text-end">${order.taxPrice}</Col>
                 </Row>
+              </ListGroupItem>
+              <ListGroupItem className="app-summary-total-item">
                 <Row>
-                  <Col>total</Col>
-                  <Col>${order.totalPrice}</Col>
+                  <Col className="fw-bold app-final-total-text">Total:</Col>
+                  <Col className="text-end fw-bold app-final-total-price">
+                    ${order.totalPrice}
+                  </Col>
                 </Row>
               </ListGroupItem>
               {!order.isPaid && (
-                <ListGroupItem>
+                <ListGroupItem className="app-paypal-section">
                   {loadingPay && <Loader />}
                   {isPending ? (
                     <Loader />
@@ -199,9 +245,9 @@ const OrderScreen = () => {
                     <div>
                       <Button
                         onClick={onApproveTest}
-                        style={{ marginBottom: "10px" }}
+                        className="w-100 mb-2 app-test-pay-btn"
                       >
-                        test pay order
+                        Test Pay Order
                       </Button>
                       <PayPalButtons
                         onError={onError}
@@ -212,7 +258,21 @@ const OrderScreen = () => {
                   )}
                 </ListGroupItem>
               )}
-              {/* mark order as delivered */}
+              {loadingDeliver && <Loader />}
+              {userInfo &&
+                userInfo.isAdmin &&
+                order.isPaid &&
+                !order.isDelivered && (
+                  <ListGroup.Item className="app-deliver-section">
+                    <Button
+                      type="button"
+                      className="w-100 app-deliver-btn"
+                      onClick={DeliverOrderHandler}
+                    >
+                      Mark As Delivered
+                    </Button>
+                  </ListGroup.Item>
+                )}
             </ListGroup>
           </Card>
         </Col>
