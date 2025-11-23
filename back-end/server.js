@@ -16,7 +16,7 @@ import cookieParser from 'cookie-parser'
 dotenv.config()
 
 connectDb()
-const port =process.env.PORT || 8000
+const port =process.env.PORT || 5000
 
 const app =express()
 
@@ -48,13 +48,13 @@ app.get('/api/config/paypal', (req, res) =>
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static(path.join(__dirname, 'front-end/dist')));
 
-app.get(/.*/, (req, res) => {
-  res.sendFile(path.resolve(__dirname, 'front-end', 'dist', 'index.html'));
-});
+  app.get('*', (req, res) => {
+    res.sendFile(path.resolve(__dirname, 'front-end', 'dist', 'index.html'));
+  });
 
 } else {
   app.get('/', (req, res) => {
-    res.send('api is running....');
+    res.send('API is running....');
   });
 }
 
