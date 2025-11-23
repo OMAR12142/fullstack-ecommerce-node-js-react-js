@@ -1,7 +1,7 @@
 import { Col, Row, Spinner } from "react-bootstrap";
 import { Product } from "../components/Product";
 import { useGetProductsQuery } from "../slices/productsApiSlice.js";
-import Loader from "../components/loader.jsx";
+import Loader from "../components/Loader.jsx";
 import Message from "../components/Message.jsx";
 import { Link, useParams } from "react-router-dom";
 import PaginationComp from "../components/PaginationComp.jsx";
