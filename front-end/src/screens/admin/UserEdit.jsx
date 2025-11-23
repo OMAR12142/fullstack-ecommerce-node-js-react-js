@@ -4,11 +4,11 @@ import {
   useUpdateUserMutation,
 } from "../../slices/usersApiSlice";
 import { Form, Button } from "react-bootstrap";
-import Loader from "../../components/loader";
 import Message from "../../components/Message";
 import { toast } from "react-toastify";
 import { useEffect, useState } from "react";
 import { FormContainer } from "../../components/FormContainer";
+import Loader from "../../components/Loader";
 
 export const UserEdit = () => {
   const { id: userId } = useParams();

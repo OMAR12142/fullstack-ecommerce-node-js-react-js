@@ -1,6 +1,6 @@
 import React from "react";
 import { useGetAllOrdersQuery } from "../../slices/ordersApiSlice.JS";
-import Loader from "../../components/loader";
+import Loader from "../../components/Loader";
 import Message from "../../components/Message";
 import { FaTimes } from "react-icons/fa";
 import { Button } from "react-bootstrap";

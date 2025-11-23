@@ -2,7 +2,7 @@ import { Link, useParams, useNavigate } from "react-router-dom";
 import { Button, Card, Col, Form, ListGroup, Row } from "react-bootstrap";
 import Rating from "../components/Rating";
 import { useGetProductDetailsQuery } from "../slices/productDetailsApiSlice";
-import Loader from "../components/loader";
+import Loader from "../components/Loader";
 import Message from "../components/Message";
 import { useState } from "react";
 import { addToCart } from "../slices/cartSlice.js";

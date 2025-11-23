@@ -5,12 +5,12 @@ import {
 } from "../../slices/productsApiSlice";
 import { Button, Col, Pagination, Row } from "react-bootstrap";
 import { FaEdit, FaTrash } from "react-icons/fa";
-import Loader from "../../components/loader";
 import { LinkContainer } from "react-router-bootstrap";
 import { toast } from "react-toastify";
 import Message from "../../components/Message";
 import { useParams } from "react-router-dom";
 import PaginationComp from "../../components/PaginationComp";
+import Loader from "../../components/Loader";
 
 const ProductsScreen = () => {
   const { pageNumber, keyword } = useParams();

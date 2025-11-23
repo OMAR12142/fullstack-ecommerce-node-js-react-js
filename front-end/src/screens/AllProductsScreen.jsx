@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Row, Col } from "react-bootstrap";
 import { useGetProductsQuery } from "../slices/productsApiSlice.js";
 import Product from "../components/Product";
-import Loader from "../components/loader";
+import Loader from "../components/Loader";
 import Message from "../components/Message";
 import PaginationComp from "../components/PaginationComp";
 import { useParams } from "react-router-dom";

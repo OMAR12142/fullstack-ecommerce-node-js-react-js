@@ -7,7 +7,7 @@ import {
 import { useGetProductDetailsQuery } from "../../slices/productDetailsApiSlice";
 import { FormContainer } from "../../components/FormContainer";
 import { Form, Button } from "react-bootstrap";
-import Loader from "../../components/loader";
+import Loader from "../../components/Loader";
 import Message from "../../components/Message";
 import { toast } from "react-toastify";
 

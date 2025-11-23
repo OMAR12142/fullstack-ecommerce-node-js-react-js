@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useGetOrderDetailsQuery } from "../slices/ordersApiSlice.JS";
-import Loader from "../components/loader";
+import Loader from "../components/Loader";
 import Message from "./../components/Message";
 import {
   Button,
