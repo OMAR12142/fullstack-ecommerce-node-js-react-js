@@ -1,6 +1,5 @@
 import React from "react";
 import { useGetAllOrdersQuery } from "../../slices/ordersApiSlice.JS";
-import Loader from "../../components/loader";
 import Message from "../../components/Message";
 import { FaTimes, FaTrash, FaEdit, FaCheck } from "react-icons/fa";
 import { Button } from "react-bootstrap";
@@ -10,6 +9,7 @@ import {
   useGetusersQuery,
 } from "../../slices/usersApiSlice";
 import { toast } from "react-toastify";
+import Loader from "../../components/Loader";
 
 const UserListScreen = () => {
   const { data: users, isLoading, error, refetch } = useGetusersQuery();
